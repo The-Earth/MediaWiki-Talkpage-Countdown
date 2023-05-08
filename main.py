@@ -53,7 +53,7 @@ def get_sections_with_template(page_title: str) -> list[tuple[str, str]]:
         "formatversion": "2"
     }
 
-    section_result = site.api('parse', query_sections_data)
+    section_result = site.api('parse', **query_sections_data)
     sections = section_result['parse']['sections']
     section_idx = [item['index'] for item in sections if item['fromtitle'] == page_title and item['toclevel'] == 1]
 
@@ -68,7 +68,7 @@ def get_sections_with_template(page_title: str) -> list[tuple[str, str]]:
     }
     for idx in section_idx:
         query_section_template_data['section'] = idx
-        template_result = site.api('parse', query_section_template_data)
+        template_result = site.api('parse', **query_section_template_data)
         for template in template_result['parse']['templates']:
             if template['title'] == template_name:
                 section_with_template.append(idx)
