@@ -34,7 +34,7 @@ def get_transclude_in() -> list[str]:
         api_result = site.api('query', **query_data)
         pages.extend(api_result['query']['pages'][0]['transcludedin'])
 
-    output = [item['title'] for item in pages if item['title'] != template_name]
+    output = [item['title'].replace(' ', '_') for item in pages if item['title'] != template_name]
 
     return output
 
