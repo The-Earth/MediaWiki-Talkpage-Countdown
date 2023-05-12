@@ -79,7 +79,7 @@ def get_sections_with_template(page_title: str) -> list[tuple[str, str]]:
                 template_search = template_regex.search(template_result['parse']['wikitext'])
                 target_time = template_search.groups()[1]
                 # (section index, section title, target time)
-                section_with_template.append((template_result['parse']['sections']['line'], target_time))
+                section_with_template.append((template_result['parse']['sections'][0]['line'], target_time))
 
     return section_with_template
 
