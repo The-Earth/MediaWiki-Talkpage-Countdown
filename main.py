@@ -1,6 +1,7 @@
 import json
 import re
 from datetime import datetime
+import time
 import mwclient
 
 config = json.load(open('config.json', 'r', encoding='utf-8'))
@@ -107,4 +108,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    while True:
+        main()
+        time.sleep(60)
