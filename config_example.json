@@ -1,5 +1,6 @@
 {
   "site": "zh.wikipedia.org",
   "bot_username": "",
-  "bot_password": ""
+  "bot_password": "",
+  "update_interval": 3600
 }
