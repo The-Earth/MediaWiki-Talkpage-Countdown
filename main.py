@@ -77,10 +77,10 @@ def get_sections_with_template(page_title: str) -> list[tuple[str, str]]:
         for template in template_result['parse']['templates']:
             if template['title'] == template_name:
                 # Target template found
-                template_search = template_regex.search(template_result['parse']['wikitext'])
-                target_time = template_search.groups()[1]
-                # (section index, section title, target time)
-                section_with_template.append((template_result['parse']['sections'][0]['line'], target_time))
+                if template_search := template_regex.search(template_result['parse']['wikitext']):
+                    target_time = template_search.groups()[1]
+                    # (section index, section title, target time)
+                    section_with_template.append((template_result['parse']['sections'][0]['line'], target_time))
 
     return section_with_template
 
@@ -96,7 +96,13 @@ def main():
         sections = get_sections_with_template(page_title)   # (section title, target time)
         sections_with_template[page_title] = sections
         for section in sections:
-            if datetime.utcnow() < datetime.fromisoformat(section[1]):
+            try:
+                target_time = datetime.fromisoformat(section[1])
+                unexpired = datetime.utcnow() < target_time
+            except (ValueError, TypeError):
+                continue
+
+            if unexpired:
                 unexpired_log_text += f'* [[{page_title}#{section[0]}]] - {section[1]}\n'
             else:
                 expired_log_text +=f'* [[{page_title}#{section[0]}]] - {section[1]}\n'
